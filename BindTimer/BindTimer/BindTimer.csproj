@@ -71,6 +71,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Hotkey.cs" />
     <Compile Include="ini.cs" />
     <Compile Include="Settings.cs" />
     <Page Include="MainWindow.xaml">

@@ -14,53 +14,39 @@ namespace BindTimer
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		[DllImport("user32.dll")]
-		private static extern bool RegisterHotKey(IntPtr hwnd, int id, int fsModifiers, int vk);
-
-		[DllImport("user32.dll")]
-		private static extern int UnregisterHotKey(IntPtr hwnd, int id);
-
-		readonly int PEROID = 92;
-		int now = 92;
+		readonly int resisttime;
+		int now;
+		readonly Settings set = Settings.Instance;
+		Hotkey hotkeyhelper;
 		Timer timer;
 		bool istimerstarted = false;
 
 		public MainWindow()
 		{
 			InitializeComponent();
+			hotkeyhelper = new Hotkey(this, StartTimer);
+			resisttime = 90 + set.Addtime;
+			now = resisttime;
 		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			var helper = new WindowInteropHelper(this);
-			HwndSource source = HwndSource.FromHwnd(helper.Handle);
-			source.AddHook(WndProc);
-			if (!RegisterHotKey(helper.Handle, 9000, 0x00, 0x13))
-			{
-				MessageBox.Show("오류");
-			}
+			hotkeyhelper.Register();
+			txthelp.Text = string.Format(txthelp.Text, set.HotkeyByString);
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			UnregisterHotKey(new WindowInteropHelper(this).Handle, 9000);
+			hotkeyhelper.Unregister();
 		}
 
-		private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-		{
-			if (msg == 0x0312 && wParam.ToInt32() == 9000)
-			{
-				StartTimer();
-			}
-			return IntPtr.Zero;
-		}
 
 		private void StartTimer()
 		{
 			if (istimerstarted)
 				timer.Dispose();
 
-			now = PEROID;
+			now = resisttime;
 			SystemSounds.Asterisk.Play();
 			BackGroundAnimationStart();
 

@@ -12,7 +12,7 @@
 				<MenuItem Name="menualwaystop" Header="항상 위" IsCheckable="True" IsChecked="True" Click="menualwaystop_Click"/>
 			</MenuItem>
 		</Menu>
-		<TextBlock DockPanel.Dock="Bottom" Text=" 바인드 쓰면 Pause 키 누르세요."/>
+		<TextBlock Name="txthelp" DockPanel.Dock="Bottom" Text=" 바인드 쓰면 {0} 키 누르세요."/>
 		<Grid x:Name="timerbackground" Background="Lime">
 			<Viewbox>
 				<TextBlock Name="txttimer" Text="써도 됨" TextWrapping="Wrap"/>
